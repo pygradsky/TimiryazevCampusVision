@@ -47,9 +47,10 @@ class SimpleCNN(nn.Module):
 
     def forward(self, x):
         """
-        Прямой проход через сеть.
+        Прямой проход через сеть,
         x - входное изображение размером [batch, 3, 224, 224]
         """
+
         # Пропускаем через сверточные слои
         x = self.conv1(x)
         x = self.conv2(x)
@@ -79,6 +80,7 @@ def train_model(model, train_loader, criterion, optimizer, device, num_epochs=5)
     - device: устройство (CPU или GPU)
     - num_epochs: количество эпох обучения
     """
+
     model.train()  # Переводим модель в режим обучения
 
     for epoch in range(num_epochs):
@@ -159,4 +161,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
