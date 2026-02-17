@@ -3,6 +3,8 @@ import os
 
 
 def video_to_frames(video_name: str, campus_name: str):
+    """Извлекает кадры из видео и сохраняет их в папке, соответствующей выбранному корпусу."""
+
     video_path = rf"C:\Users\Professional\PycharmProjects\TimiryazevCampusVision\videos\{video_name}.mp4"
     output_path = rf"C:\Users\Professional\PycharmProjects\TimiryazevCampusVision\campuses\{campus_name}"
 
