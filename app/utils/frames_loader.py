@@ -10,7 +10,7 @@ def video_to_frames(video_name: str, campus_name: str):
 
     if not os.path.exists(video_path):
         return f"Видео '{video_path}' не найдено."
-    if not os.path.isdir(output_path):
+    if not os.path.exists(output_path):
         return f"Папка '{output_path}' не найдена."
 
     print("\nПодождите, идет извлечение кадров из видео...")
