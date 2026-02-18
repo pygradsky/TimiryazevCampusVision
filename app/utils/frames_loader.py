@@ -1,12 +1,14 @@
 import cv2
 import os
 
+BASE_DIR = r"C:\Users\Professional\PycharmProjects\TimiryazevCampusVision"
+
 
 def video_to_frames(video_name: str, campus_name: str):
     """Извлекает кадры из видео и сохраняет их в папке, соответствующей выбранному корпусу."""
 
-    video_path = rf"C:\Users\Professional\PycharmProjects\TimiryazevCampusVision\videos\{video_name}.mp4"
-    output_path = rf"C:\Users\Professional\PycharmProjects\TimiryazevCampusVision\campuses\{campus_name}"
+    video_path = os.path.join(BASE_DIR, "videos", f"{video_name}.mp4")
+    output_path = os.path.join(BASE_DIR, "campuses", campus_name)
 
     if not os.path.exists(video_path):
         return f"Видео '{video_path}' не найдено."
@@ -50,4 +52,4 @@ if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        print("Exit")
+        print("Досрочное завершение програмы")
