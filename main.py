@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.optim as optim
 
 # Импортируем нашу утилиту для загрузки данных
-from utils.image_dataloader import get_image_dataloader
+from app.utils.image_dataloader import get_image_dataloader
 
 
 # ============================================================

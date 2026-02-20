@@ -39,6 +39,7 @@ def video_to_frames(video_name: str, campus_name: str):
         frame_index += 1
 
     cap.release()
+
     print(f"Было извлечено кадров: {frames_count}")
     return frames_count
 
