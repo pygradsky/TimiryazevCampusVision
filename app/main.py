@@ -38,7 +38,7 @@ def main():
         elif choice == "3":
             print("Запуск предсказания на новых изображениях...")
             os.system(f'python "{TEST_MODEL_SCRIPT}"')
-        elif choice == "5":
+        elif choice == "4":
             print("Выход...")
             sys.exit(0)
         else:

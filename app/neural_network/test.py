@@ -13,7 +13,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # Загружаем модель
 # -------------------------------
 model = SimpleCNN()
-model_name = input("Введите имя сохраненной модели:\n>>> ")
+model_name = input("Введите имя сохраненной модели (например: simple_cnn.pth):\n>>> ")
 model_path = SAVED_MODELS_DIR / model_name
 try:
     model.load_state_dict(torch.load(model_path, map_location=device))
