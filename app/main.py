@@ -1,80 +1,49 @@
-import torch
-import torch.nn as nn
-import torch.optim as optim
-from app.neural_network.model import SimpleCNN
-from app.utils.data_utils import get_loaders
 import os
-from pathlib import Path
+import sys
 
-# -------------------------------
-# Настройка устройства
-# -------------------------------
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+# Путь к утилите
+from app.utils.safe_extract import safe_extract
 
-# -------------------------------
-# Получаем DataLoader'ы
-# -------------------------------
-train_loader, test_loader, classes = get_loaders()
-print("Классы:", classes)
-print("Размер обучающей выборки:", len(train_loader.dataset))
-print("Размер тестовой выборки:", len(test_loader.dataset))
+# Пути к скриптам
+from app.config import TRAIN_MODEL_SCRIPT
+from app.config import TEST_MODEL_SCRIPT
 
-# -------------------------------
-# Создаем модель
-# -------------------------------
-model = SimpleCNN(num_classes=len(classes))
-model.to(device)
+# Пути к данным
+from app.config import VIDEOS_DIR
+from app.config import CLASSES_DIR
 
-# -------------------------------
-# Критерий и оптимизатор
-# -------------------------------
-criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=0.001)
 
-# -------------------------------
-# Обучение
-# -------------------------------
-epochs = 5
-for epoch in range(epochs):
-    model.train()
-    running_loss = 0.0
-    for inputs, labels in train_loader:
-        inputs, labels = inputs.to(device), labels.to(device)
+def main():
+    while True:
+        print("\n=== TimiryazevCampusVision Menu ===")
+        print("1. Нарезать кадры с видео")
+        print("2. Обучить модель")
+        print("3. Предсказать на новых изображениях")
+        print("4. Выйти")
+        choice = input("\nВыберите действие (1-4):\n>>> ")
 
-        optimizer.zero_grad()
-        outputs = model(inputs)
-        loss = criterion(outputs, labels)
-        loss.backward()
-        optimizer.step()
+        if choice == "1":
+            video_name = input("Введите имя видео (без расширения): ")
+            corpus_number = input("Введите номер корпуса: ")
 
-        running_loss += loss.item()
+            video_path = os.path.join(VIDEOS_DIR, video_name)
+            output_path = os.path.join(CLASSES_DIR, corpus_number)
 
-    print(f"Эпоха {epoch + 1}, loss: {running_loss / len(train_loader):.4f}")
+            result = safe_extract(video_path, output_path)
+            print(result)
 
-print("Обучение завершено!")
+        elif choice == "2":
+            print("Запуск обучения модели...")
+            os.system(f'python "{TRAIN_MODEL_SCRIPT}"')
+        elif choice == "3":
+            print("Запуск предсказания на новых изображениях...")
+            os.system(f'python "{TEST_MODEL_SCRIPT}"')
+        elif choice == "5":
+            print("Выход...")
+            sys.exit(0)
+        else:
+            print("Неверный выбор. Попробуйте снова.")
 
-# -------------------------------
-# Сохраняем модель
-# -------------------------------
-save_dir = Path(__file__).parent / "saved_models"
-os.makedirs(save_dir, exist_ok=True)  # создаём папку, если её нет
-save_path = save_dir / "simple_cnn.pth"
 
-torch.save(model.state_dict(), save_path)
-print(f"Модель успешно сохранена в {save_path}")
-
-# -------------------------------
-# Тестирование
-# -------------------------------
-model.eval()
-correct = 0
-total = 0
-with torch.no_grad():
-    for inputs, labels in test_loader:
-        inputs, labels = inputs.to(device), labels.to(device)
-        outputs = model(inputs)
-        _, predicted = torch.max(outputs, 1)
-        total += labels.size(0)
-        correct += (predicted == labels).sum().item()
-
-print(f"Точность на тесте: {100 * correct / total:.2f}%")
+if __name__ == "__main__":
+    main()

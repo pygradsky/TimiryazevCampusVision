@@ -2,7 +2,7 @@ import cv2
 import os
 
 
-def extract_frames(video_path, output_path, frame_step: int):
+def extract_frames(video_path, output_path, frame_step: int = 3):
     """
     Извлекает кадры из видео и сохраняет их в указанную папку.
     Возвращает количество сохраненных кадров.
